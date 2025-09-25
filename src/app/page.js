@@ -2,7 +2,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Data from "./mockdata.json";
-import { Page_logo, gemstonesValues, imageslist, metalmoney, productslist } from "@/utils/constants";
+import { Page_logo, gemstonesValues, imageslist, metalmoney, gemquality, productslist } from "@/utils/constants";
 import Carousel from "./components/slider";
 import RelatedProducts from "./components/RelatedProducts";
 import Head from 'next/head';
@@ -22,7 +22,9 @@ export default function Home() {
     const metalValue = metalRate * metalWeight;
 
     const gemstonePricePerCarat = gemstonesValues[selectedRingstyle.gemstone] || 0;
-    const gemstoneValue = gemstonePricePerCarat * selectedRingstyle.carrot_weight;
+
+    const qualityRate = gemquality[selectedRingstyle.quality] || 0;
+    const gemstoneValue = (gemstonePricePerCarat + qualityRate) * selectedRingstyle.carrot_weight;
 
     const makingCharges = Data.price_breakdown.making_charges;
 
@@ -34,6 +36,7 @@ export default function Home() {
       metalRate,
       metalWeight,
       metalValue,
+      qualityRate,
       gemstoneValue,
       makingCharges,
       subtotal,
@@ -86,7 +89,7 @@ export default function Home() {
       }} />
       </Head>
 
-      <nav className="flex justify-between items-center w-full sm:p-5 shadow-neutral-200">
+      <nav className="flex justify-between items-center w-full p-5 shadow-neutral-200">
         <div style={{ width: "130px", height: "39px", position: "relative" }}>
           <Image
            src={ Page_logo } alt="logo"
@@ -97,16 +100,16 @@ export default function Home() {
           <span>&#128722;</span>
         </div>
       </nav>
-      <main className="flex sm:p-5 gap-8">
-        <section className="w-1/2">
+      <main className="flex flex-col gap-8 pt-10 px-5 md:flex-row">
+        <section className="md:w-1/2">
           <Carousel images={updatedImages} />
-          <div className="mt-4">
-            Selected: {selectedRingstyle.quality} | {selectedRingstyle.gemstone} | {selectedRingstyle.metal} |{" "}
+          <div className="mt-4 text-center">
+            <span className="font-medium">Selected:</span> {selectedRingstyle.quality} | {selectedRingstyle.gemstone} | {selectedRingstyle.metal} |{" "}
             {selectedRingstyle.carrot_weight} Ct.tw
           </div>
         </section>
 
-        <section className="w-1/2 space-y-6">
+        <section className="md:w-1/2 space-y-6">
           <div key={Data?.id}>
             <h2 className="font-medium text-lg">{Data?.title}</h2>
             <div className="flex gap-3"> 
@@ -260,6 +263,13 @@ export default function Home() {
                   <td className="text-center p-2">₹{gemstonesValues[selectedRingstyle.gemstone]}</td>
                   <td className="text-center p-2">{selectedRingstyle.carrot_weight} ct</td>
                   <td className="text-right p-2">₹{priceBreakdown.gemstoneValue.toLocaleString("en-IN")}</td>
+                </tr>
+
+                <tr>
+                  <td className="p-2">Quality ({selectedRingstyle.quality})</td>
+                  <td className="text-center p-2">₹{priceBreakdown.qualityRate}</td>
+                  <td className="text-center p-2">{selectedRingstyle.carrot_weight} ct</td>
+                  <td className="text-right p-2">₹{(priceBreakdown.qualityRate * selectedRingstyle.carat_weight).toLocaleString("en-IN")}</td>
                 </tr>
 
                 <tr>

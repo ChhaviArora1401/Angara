@@ -12,6 +12,13 @@ export const metalmoney = {
   "Rose Gold": 4700,
 };
 
+export const gemquality = {
+  Good: 4567,
+  Better: 4800,
+  Best: 5200,
+  Heirloom: 5800,
+};
+
 export const imageslist = {
     Aquamarine: "/images/Frame1.png",
     Diamond: "/images/Frame2.png",

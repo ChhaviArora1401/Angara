@@ -6,7 +6,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-export default function RelatedProducts({ images }) {
+export default function RelatedProducts({ relatedProducts }) {
   return (
     <Swiper
       navigation
@@ -17,7 +17,7 @@ export default function RelatedProducts({ images }) {
       loop
       className="mySwiper"
     >
-      {images.map((img, i) => (
+      {relatedProducts?.map((img, i) => (
         <SwiperSlide key={i}>
           <div className="flex justify-center flex-col items-center p-2">
             <img src={img.src} alt={img.alt || `Slide ${i + 1}`} loading="lazy" className="otherimages" />
